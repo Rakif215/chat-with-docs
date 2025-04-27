@@ -1,0 +1,38 @@
+# .gitlab-ci.yml (Final Clean Version)
+
+stages:
+  - install
+  - test
+  - build
+  - deploy
+
+# Step 1: Install Python dependencies
+install_dependencies:
+  stage: install
+  image: python:3.10
+  script:
+    - pip install --no-cache-dir -r requirements.txt
+
+# Step 2: Run basic test (you can later add real test scripts)
+test_app:
+  stage: test
+  image: python:3.10
+  script:
+    - echo "Placeholder test - All good!"
+
+# Step 3: Build the Docker image
+build_image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    - docker build -t rag-chatbot .
+
+# Step 4: (Optional) Deploy step - Here it's just a placeholder
+deploy_app:
+  stage: deploy
+  script:
+    - echo "Deployment would happen here (e.g., push to DockerHub or deploy to server)."
