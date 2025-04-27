@@ -4,17 +4,18 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Copy requirements first (for better caching)
-COPY requirements.txt .
+# Install system packages needed to compile Python libraries
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+ && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
+# Install Python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your app code
+# Copy the rest of the application code
 COPY . .
 
-# Expose the port (Streamlit default or your app port if needed)
-EXPOSE 8501
-
-# Run the app
-CMD ["python", "app_v2.py"]
+# Default command to run your app
+CMD ["python", "your_app.py"]
